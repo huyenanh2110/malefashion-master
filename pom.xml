@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.poly</groupId>
-    <artifactId>malefashion-master-spring</artifactId>
+    <artifactId>malefashion-master-spring-be</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>malefashion-master-spring</name>
     <description>malefashion-master-spring</description>

@@ -14,7 +14,6 @@ import java.util.Set;
 @Getter
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")

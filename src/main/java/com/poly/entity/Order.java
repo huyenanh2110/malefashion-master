@@ -1,5 +1,6 @@
 package com.poly.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    Long id;
+    Integer id;
 
     @Column(name = "address")
     String address;
@@ -27,10 +28,12 @@ public class Order implements Serializable {
     @Column(name = "create_date")
     Date createDate = new Date();
 
-    @ManyToOne @JoinColumn(name = "username")
-    Account account;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "user_name")
+    private Account account;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "order")
-    private Set<OrderDetail> cartItems;
+    private Set<OrderDetail> orderDetails;
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,14 +15,27 @@ import java.util.List;
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_name")
     private String username;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "full_name")
     private String fullname;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "photo")
     private String photo;
+
     @Column(name = "is_active")
     private boolean activated;
+
+    @Column(name ="admin")
     private boolean admin;
+
     @OneToMany(mappedBy = "account")
-    List<Order> orders;
+    Set<Order> orders;
 }

@@ -8,25 +8,25 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "orders")
+@Getter
+@Setter
 public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    Integer id;
+    private Integer orderId;
 
     @Column(name = "address")
-    String address;
+    private String address;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "create_date")
-    Date createDate = new Date();
+    private Date createDate;
 
     @JsonBackReference
     @ManyToOne
@@ -36,4 +36,6 @@ public class Order implements Serializable {
     @JsonManagedReference
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetails;
+
+    // Other properties and methods can be added here
 }

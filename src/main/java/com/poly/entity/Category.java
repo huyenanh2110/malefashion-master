@@ -22,7 +22,7 @@ public class Category implements Serializable {
     @Column(name = "category_name")
     private String categoryName;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "category")
-    private Set<Product> products;
+        @JsonManagedReference
+        @OneToMany(mappedBy = "category")
+        private Set<Product> products;
 }

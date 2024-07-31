@@ -1,5 +1,6 @@
 package com.poly.service.impl;
 
+import com.poly.converter.CategoryConverter;
 import com.poly.converter.ProductConverter;
 import com.poly.dto.product.ProductResponse;
 import com.poly.entity.Product;
@@ -10,11 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 
 public class ProductServiceImpl implements ProductService {
 
-  private final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -35,8 +39,21 @@ public class ProductServiceImpl implements ProductService {
         });
     }
 
+
     @Override
     public Long countProducts() {
         return productRepository.count();
+    }
+
+    @Override
+    public List<ProductResponse> getFeatureProducts() {
+        List<Product> products = productRepository.findAll();
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("Product", "list", "empty");
+
+        }
+        return products.stream().map(ProductConverter::toProductResponse)
+                .collect(Collectors.toList());
+
     }
 }

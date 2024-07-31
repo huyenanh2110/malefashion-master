@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,5 +28,9 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(count));
         Page<ProductResponse> productResponses = productServiceImpl.getProducts(pageable);
         return ResponseEntity.ok(productResponses);
+    }
+    @GetMapping("/feature-product")
+    public ResponseEntity<List<ProductResponse>> getFeatureProducts() {
+        return ResponseEntity.ok(productServiceImpl.getFeatureProducts());
     }
 }

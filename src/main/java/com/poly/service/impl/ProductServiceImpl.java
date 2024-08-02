@@ -8,7 +8,9 @@ import com.poly.exception.ResourceNotFoundException;
 import com.poly.repository.ProductRepository;
 import com.poly.service.ProductService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +57,21 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().map(ProductConverter::toProductResponse)
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public Page<ProductResponse> getAllProductsByCategory(Integer category, int page, int size, String sort) {
+        Sort sorting = sort.equalsIgnoreCase("asc")
+                ? Sort.by(Sort.Direction.ASC, "price")
+                : Sort.by(Sort.Direction.DESC, "price");
+        Pageable pageable = PageRequest.of(page, size, sorting);
+        Page<Product> products = productRepository.findProductByCategoryId(category, pageable);
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("Product", "list", "empty");
+        }
+        return products.map(product -> {
+            ProductResponse productResponse = ProductConverter.toProductResponse(product);
+            return productResponse;
+        });
     }
 }

@@ -10,8 +10,10 @@ public interface ProductService {
     Page<ProductResponse> getProducts(Pageable pageable);
 
 
-
     Long countProducts();
 
     List<ProductResponse> getFeatureProducts();
+
+    Page<ProductResponse> getAllProductsByCategory(Integer category, int page, int size,
+                                                   String sort);
 }

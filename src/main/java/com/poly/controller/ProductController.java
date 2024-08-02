@@ -33,4 +33,16 @@ public class ProductController {
     public ResponseEntity<List<ProductResponse>> getFeatureProducts() {
         return ResponseEntity.ok(productServiceImpl.getFeatureProducts());
     }
+    @GetMapping("/category")
+    public ResponseEntity<Page<ProductResponse>> getProductByCategory(
+            @RequestParam(value = "id", required = false) Integer categoryId,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sort", defaultValue = "asc") String sort) {
+
+        Page<ProductResponse> productResponses = productServiceImpl.getAllProductsByCategory(
+                categoryId, page, size, sort);
+        return ResponseEntity.ok(productResponses);
+
+    }
 }

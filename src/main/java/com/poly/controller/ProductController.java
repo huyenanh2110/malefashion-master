@@ -1,6 +1,8 @@
 package com.poly.controller;
 
+import com.poly.dto.product.ProductRequest;
 import com.poly.dto.product.ProductResponse;
+import com.poly.entity.Product;
 import com.poly.repository.ProductRepository;
 import com.poly.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +47,16 @@ public class ProductController {
                 categoryId, page, size, sort);
         return ResponseEntity.ok(productResponses);
 
+    }
+    @PostMapping()
+    public ResponseEntity<Integer> saveProduct(@ModelAttribute ProductRequest productRequest,
+                                               @RequestParam MultipartFile file) {
+        return ResponseEntity.ok(productServiceImpl.saveProduct(productRequest, file));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Product> removeProduct(@PathVariable Integer id) {
+        productServiceImpl.removeProduct(id);
+        return ResponseEntity.ok().build();
     }
 }

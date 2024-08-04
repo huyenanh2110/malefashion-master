@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -51,5 +52,8 @@ public class Product implements Serializable {
    @OneToMany(mappedBy = "product")
    private Set<OrderDetail> orderDetails;
 
-   // Other properties and methods can be added here
+    public void setCreateDate(LocalDateTime now) {
+    }
+
+    // Other properties and methods can be added here
 }

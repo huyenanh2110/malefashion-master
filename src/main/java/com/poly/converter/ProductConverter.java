@@ -24,7 +24,7 @@ public class ProductConverter {
         product.setDescription(productRequest.getDescription());
         product.setPrice(productRequest.getPrice());
         product.setQuantity(productRequest.getQuantity());
-        product.setPhoto(productRequest.getPhoto());
+//        product.setPhoto(productRequest.getPhoto());
 
 
         Category category = new Category();
@@ -32,4 +32,5 @@ public class ProductConverter {
         product.setCategory(category);
         return product;
     }
+
 }

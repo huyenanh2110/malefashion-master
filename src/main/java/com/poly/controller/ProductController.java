@@ -59,4 +59,13 @@ public class ProductController {
         productServiceImpl.removeProduct(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Integer id) {
+        return ResponseEntity.ok(productServiceImpl.getProduct(id));
+    }
+
+
+
+
 }

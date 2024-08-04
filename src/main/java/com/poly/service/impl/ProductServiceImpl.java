@@ -20,6 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,12 +89,46 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Integer saveProduct(ProductRequest productRequest, MultipartFile file) {
+        // Check and save category
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "categoryId",
                         "" + productRequest.getCategoryId()));
+
+        // Save image
+        String imagePath = saveImage(file);
+
+        // Convert and save product
         Product product = ProductConverter.toProduct(productRequest);
+        product.setCreateDate(LocalDateTime.now());
+        product.setPhoto(imagePath); // Set image path to product
         productRepository.save(product);
+
         return product.getProductId();
+    }
+
+    private String saveImage(MultipartFile file) {
+        try {
+            // Define the upload directory
+            String uploadDir = "src/main/resources/static/user/img/clothes/";
+            Path uploadPath = Paths.get(uploadDir);
+
+            // Ensure the directory exists, create it if it doesn't
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Create the full file path
+            String fileName = file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            // Save the file to the directory
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Return the image path
+            return  fileName;
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save image: " + e.getMessage());
+        }
     }
 
     @Override
@@ -109,6 +147,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProduct(Integer id) {
-        return null;
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", "" + id));
+        ProductResponse productResponse = ProductConverter.toProductResponse(product);
+        return productResponse;
     }
 }
